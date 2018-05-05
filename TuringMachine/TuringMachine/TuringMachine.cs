@@ -50,11 +50,8 @@ namespace TuringMachine
         /// </summary>
         private void BuildMachine()
         {
-            this.CurrentStateNumber = 0;
-            this.Pointer = 0;
-
-            String[] Lines = File.ReadAllLines(transitionFilePath);
             int CurrentStateNumber = -1;
+            String[] Lines = File.ReadAllLines(transitionFilePath);
             // Creates machine states, without transitions
             for (int i = 0; i < Lines.Length; i++)
             {

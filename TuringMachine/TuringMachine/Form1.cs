@@ -14,31 +14,58 @@ namespace TuringMachine
 {
     public partial class Form1 : Form
     {
+        int Contador = 0;
         Graphics drawArea;
-        UnaryMultiplier um;
+        PalindromeValidator um;
         bool FirstMultiplier = true;
         public Form1()
         {
-            
-
             InitializeComponent();
             drawArea = DrawingArea.CreateGraphics();
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            
+
             if (FirstMultiplier)
             {
-                um = new UnaryMultiplier(MultiplierTxtEntry.Text);
+                um = new PalindromeValidator(MultiplierTxtEntry.Text);
+                for (int i = 0; i < um.Machine.TapeAlphabet.Count; i++)
+                {
+                    DataGridViewColumn dgvc = new DataGridViewColumn();
+                    dgvc.CellTemplate = new DataGridViewTextBoxCell();
+                    dgvc.Name = um.Machine.TapeAlphabet[i];
+                    dataGridView1.Columns.Add(dgvc);
+                }
+                for (int i = 0; i < um.Machine.Q.Count; i++)
+                {
+                    dataGridView1.Rows.Add("q" + i);
+                }
+
+                for(int i = 0; i < um.Machine.Q.Count; i++)
+                {
+                    for(int j = 0; j < um.Machine.TapeAlphabet.Count; j++)
+                    {
+                        dataGridView1.Rows[i].Cells[j].Value = um.Machine.Q[i].getTransition(um.Machine.TapeAlphabet[j]);
+                    }
+                }
+
+                Contador = 0;
                 DrawMachine(um.Machine);
+                Contador++;
                 button1.Text = "Next Step";
                 FirstMultiplier = false;
+                this.textBox1.Text = um.Machine.CurrentState.Descripción;
+                this.textBox2.Text = "Number of steps: " +Contador.ToString();
+
             }
             else
             {
+                Contador++;
                 this.ModifyTape();
                 um.Machine.Next();
+                this.textBox1.Text = um.Machine.CurrentState.Descripción;
+                this.textBox2.Text = "Number of steps: " +Contador.ToString();
             }
 
         }
@@ -117,7 +144,8 @@ namespace TuringMachine
 
             if (um.Machine.AcceptingStates.Contains(um.Machine.CurrentStateNumber))
             {
-                MessageBox.Show("Operación terminada");
+                MessageBox.Show(String.Format("Operación terminada en {0} pasos", Contador.ToString()));
+                
                 return;
             }
             DrawArrow((startX + boxWidth / 2) + pointer * boxWidth, startY + boxHeight + 50, (startX + boxWidth / 2) + pointer * boxWidth, startY + boxHeight + 5, Color.White);
@@ -167,23 +195,62 @@ namespace TuringMachine
             {
                 if (FirstMultiplier)
                 {
-                    um = new UnaryMultiplier(MultiplierTxtEntry.Text);
+                    um = new PalindromeValidator(MultiplierTxtEntry.Text);
+                    for(int i = 0; i < um.Machine.TapeAlphabet.Count; i++)
+                    {
+                        DataGridViewColumn dgvc = new DataGridViewColumn();
+                        dataGridView1.Columns.Add(dgvc);
+                    }
+                    for(int i = 0; i < um.Machine.Q.Count; i++)
+                    {
+                        dataGridView1.Rows.Add("q"+i);
+                    }
                     DrawMachine(um.Machine);
+                    Contador++;
                     button1.Text = "Next Step";
                     FirstMultiplier = false;
                 }
                 else
                 {
+                    Contador++;
                     this.ModifyTape();
                     um.Machine.Next();
                 }
                 Thread.Sleep(1000-Speed.Value);
                 if (um.Machine.AcceptingStates.Contains(um.Machine.CurrentStateNumber))
                 {
-                    MessageBox.Show("Operación terminada");
+                    MessageBox.Show("Operación terminada en " + Contador.ToString() + " pasos");
                     return;
                 }
             } while (!um.Machine.AcceptingStates.Contains(um.Machine.CurrentStateNumber));
+        }
+
+        public void DrawState()
+        {
+            DrawFilledRectangle(9, 9, 900, 40, Color.White);
+            DrawString(um.Machine.CurrentState.Descripción, 10, 10, 30, Color.Black);
+        }
+
+        
+
+        private void tabPage1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void DrawingArea_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
         }
     }
 }
