@@ -6,32 +6,34 @@ using System.Threading.Tasks;
 
 namespace TuringMachine
 {
-    class Subtractor
+    class Subtractor:TuringMachine
     {
-        public TuringMachine Machine;
 
-        public Subtractor(String entry)
+        public Subtractor(string filePath, string entry) : base(filePath, entry)
         {
-            Machine = new TuringMachine("src/m4.txt", " "+entry);
-            Machine.EntryAlphabet.Add("1");
-            Machine.EntryAlphabet.Add("0");
-            Machine.TapeAlphabet.Add("1");
-            Machine.TapeAlphabet.Add("0");
+            BuildMachine("src/m4.txt");
+            this.EntryAlphabet.Add("1");
+            this.EntryAlphabet.Add("0");
 
-            Machine.AcceptingStates.Add(8);
-            Machine.CurrentStateNumber = 0;
-            Machine.Pointer = 1;
+            this.TapeAlphabet.Add("1");
+            this.TapeAlphabet.Add("0");
+            this.TapeAlphabet.Add("-");
+            this.TapeAlphabet.Add("=");
+            this.TapeAlphabet.Add("U");
+            this.AcceptingStates.Add(7);
+            this.CurrentStateNumber = 8;
+            //this.Pointer = 1;
             FillBlanks(entry);
 
-            Machine.Q[1].Descripción = "Adds 1 at the end.";
-            Machine.Q[2].Descripción = "Searches the next 1 to copy it";
-            Machine.Q[3].Descripción = "Starts to subtract";
-            Machine.Q[4].Descripción = "Deletes last 1";
-            Machine.Q[5].Descripción = "Deletes a 1";
-            Machine.Q[6].Descripción = "Searches the next 1 to delete";
-            Machine.Q[7].Descripción = "Accepting states";
-            Machine.Q[8].Descripción = "Checks if there comes only one 1";
-            Machine.Q[9].Descripción = "Duplicates in case its only one character";
+            this.Q[1].Descripción = "Adds 1 at the end.";
+            this.Q[2].Descripción = "Searches the next 1 to copy it";
+            this.Q[3].Descripción = "Starts to subtract";
+            this.Q[4].Descripción = "Deletes last 1";
+            this.Q[5].Descripción = "Deletes a 1";
+            this.Q[6].Descripción = "Searches the next 1 to delete";
+            this.Q[7].Descripción = "Accepting states";
+            this.Q[8].Descripción = "Checks if there comes only one 1";
+            this.Q[9].Descripción = "Duplicates in case its only one character";
         }
 
         /*public void Run()
@@ -44,7 +46,7 @@ namespace TuringMachine
             int BlanksNumber = factor1.Length+1;
             for (int i = 0; i < BlanksNumber; i++)
             {
-                Machine.MachineTape.AddSymbol(Machine.blank);
+                this.MachineTape.AddSymbol(this.blank);
             }
 
         }

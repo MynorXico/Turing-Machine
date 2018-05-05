@@ -11,12 +11,15 @@ namespace TuringMachine
     {
         static void Main(string[] args)
         {
+            //TuringMachine test = new Test("", "1*11=");
+            
+            
             Console.WriteLine(System.Single.MaxValue);
             Form1 f = new Form1();
             f.ShowDialog();
             
             
-            String entry = "111*111=";
+            /*String entry = "111*111=";
             UnaryMultiplier um = new UnaryMultiplier(entry);
                 
             List<String> output = new List<string>();
@@ -35,7 +38,8 @@ namespace TuringMachine
                     output.Add("\t"+symbol+": {write: "+replacing+", "+move+": "+ nextState+"}");
                 }
             }
-            File.WriteAllLines("out.txt",output.ToArray<String>());            
+            File.WriteAllLines("out.txt",output.ToArray<String>());       
+            */
         }
     }
 }

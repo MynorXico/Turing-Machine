@@ -63,6 +63,7 @@
     </Compile>
     <Compile Include="Subtractor.cs" />
     <Compile Include="Tape.cs" />
+    <Compile Include="Test.cs" />
     <Compile Include="Transition.cs" />
     <Compile Include="TuringMachine.cs" />
     <Compile Include="UnaryMultiplier.cs" />

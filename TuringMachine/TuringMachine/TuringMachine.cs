@@ -14,11 +14,11 @@ namespace TuringMachine
         public List<MachineState> Q;
         public List<String> EntryAlphabet;
         public List<String> TapeAlphabet;
-        public String blank { get; }
+        public String blank { get; set; }
         public String transitionFilePath;
         public Tape MachineTape = new Tape();
         public List<int> AcceptingStates;
-
+        bool success = false;
 
         // Input
         public String Entry;
@@ -35,23 +35,21 @@ namespace TuringMachine
         public TuringMachine(String filePath, String entry)
         {
             AcceptingStates = new List<int>();
-            transitionFilePath = filePath;
             Q = new List<MachineState>();
             EntryAlphabet = new List<string>();
             TapeAlphabet = new List<string>();
             blank = "♭";
             TapeAlphabet.Add(blank);
             Entry = entry;
-            BuildMachine();
         }
 
         /// <summary>
         /// Constructor
         /// </summary>
-        private void BuildMachine()
+        public void BuildMachine(String filePath)
         {
             int CurrentStateNumber = -1;
-            String[] Lines = File.ReadAllLines(transitionFilePath);
+            String[] Lines = File.ReadAllLines(filePath);
             // Creates machine states, without transitions
             for (int i = 0; i < Lines.Length; i++)
             {
@@ -85,7 +83,14 @@ namespace TuringMachine
 
             // Gets Ready vor Everythin :u
             CurrentState = Q[CurrentStateNumber];
-            CurrentSymbol = MachineTape.boxes[Pointer];
+            try
+            {
+                CurrentSymbol = MachineTape.boxes[Pointer];
+            }
+            catch
+            {
+                return;
+            }
         }
         
         public void Run()
@@ -120,7 +125,14 @@ namespace TuringMachine
             }
             ExecuteTransition(t);
             CurrentState = Q[CurrentStateNumber];
-            CurrentSymbol = MachineTape.boxes[Pointer];
+            try
+            {
+                CurrentSymbol = MachineTape.boxes[Pointer];
+            }
+            catch
+            {
+                return;
+            }
         }
 
 

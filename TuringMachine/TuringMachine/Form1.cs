@@ -16,46 +16,51 @@ namespace TuringMachine
     {
         int Contador = 0;
         Graphics drawArea;
-        PalindromeValidator um;
+        TuringMachine um;
         bool FirstMultiplier = true;
+        bool Validate = false;
+
         public Form1()
         {
             InitializeComponent();
             drawArea = DrawingArea.CreateGraphics();
+            radioButton2.Checked = true;
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-
             if (FirstMultiplier)
             {
-                um = new PalindromeValidator(MultiplierTxtEntry.Text);
-                for (int i = 0; i < um.Machine.TapeAlphabet.Count; i++)
+                Validate = false;
+                SelectMachine();
+                for (int i = 0; i < um.TapeAlphabet.Count; i++)
                 {
                     DataGridViewColumn dgvc = new DataGridViewColumn();
                     dgvc.CellTemplate = new DataGridViewTextBoxCell();
-                    dgvc.Name = um.Machine.TapeAlphabet[i];
+                    dgvc.Name = um.TapeAlphabet[i];
                     dataGridView1.Columns.Add(dgvc);
                 }
-                for (int i = 0; i < um.Machine.Q.Count; i++)
+                for (int i = 0; i < um.Q.Count; i++)
                 {
-                    dataGridView1.Rows.Add("q" + i);
+                    dataGridView1.Rows.Add(("q" + i), "q" + i);
+                    dataGridView1.Rows[i].HeaderCell.Value = "q" + i;
+                    dataGridView1.RowHeadersWidth = 50; 
                 }
 
-                for(int i = 0; i < um.Machine.Q.Count; i++)
+                for(int i = 0; i < um.Q.Count; i++)
                 {
-                    for(int j = 0; j < um.Machine.TapeAlphabet.Count; j++)
+                    for(int j = 0; j < um.TapeAlphabet.Count; j++)
                     {
-                        dataGridView1.Rows[i].Cells[j].Value = um.Machine.Q[i].getTransition(um.Machine.TapeAlphabet[j]);
+                        dataGridView1.Rows[i].Cells[j].Value = um.Q[i].getTransition(um.TapeAlphabet[j]);
                     }
                 }
 
                 Contador = 0;
-                DrawMachine(um.Machine);
+                DrawMachine(um);
                 Contador++;
                 button1.Text = "Next Step";
                 FirstMultiplier = false;
-                this.textBox1.Text = um.Machine.CurrentState.Descripción;
+                this.textBox1.Text = "State q"+um.CurrentStateNumber+": "+um.CurrentState.Descripción;
                 this.textBox2.Text = "Number of steps: " +Contador.ToString();
 
             }
@@ -63,16 +68,28 @@ namespace TuringMachine
             {
                 Contador++;
                 this.ModifyTape();
-                um.Machine.Next();
-                this.textBox1.Text = um.Machine.CurrentState.Descripción;
+                
+                um.Next();
+                this.textBox1.Text = "State q" + um.CurrentStateNumber + ": " + um.CurrentState.Descripción;
                 this.textBox2.Text = "Number of steps: " +Contador.ToString();
-                for (int i = 0; i < um.Machine.Q.Count; i++)
+
+                dataGridView1.ClearSelection();
+                try
                 {
-                    for (int j = 0; j < um.Machine.TapeAlphabet.Count; j++)
+                    dataGridView1.Rows[um.CurrentStateNumber].Cells[um.TapeAlphabet.IndexOf(um.CurrentSymbol)].Selected = true;
+                }
+                catch
+                {
+                    if (!um.AcceptingStates.Contains(um.CurrentStateNumber))
                     {
-                       
-                        dataGridView1.Rows[i].Cells[j].Value = um.Machine.Q[i].getTransition(um.Machine.TapeAlphabet[j]);
+                        timer1.Stop();
+                        if(!this.Validate)
+                        MessageBox.Show(String.Format("La entrada es inválida", Contador.ToString()));
+                        Validate = true;
+                        SelectMachine();
+                        return;
                     }
+                    
                 }
             }
 
@@ -99,7 +116,7 @@ namespace TuringMachine
 
         public void DrawMachine(TuringMachine machine)
         {
-            //drawArea.Clear(Color.White);
+            drawArea.Clear(Color.White);
             Pen blackPen = new Pen(Color.Black);
 
             float NumberOfBoxes = machine.MachineTape.boxes.Count;
@@ -129,15 +146,16 @@ namespace TuringMachine
 
         public void ModifyTape()
         {
-            Transition t = um.Machine.getAdequateTransition(um.Machine.CurrentStateNumber, um.Machine.CurrentSymbol);
-            int p = um.Machine.Pointer;
+            Transition t = um.getAdequateTransition(um.CurrentStateNumber, um.CurrentSymbol);
+            
+            int p = um.Pointer;
 
             //drawArea.Clear(Color.White);
             Pen blackPen = new Pen(Color.Black);
 
-            float NumberOfBoxes = um.Machine.MachineTape.boxes.Count;
-            int pointer = um.Machine.Pointer;
-            List<string> symbols = um.Machine.MachineTape.boxes;
+            float NumberOfBoxes = um.MachineTape.boxes.Count;
+            int pointer = um.Pointer;
+            List<string> symbols = um.MachineTape.boxes;
 
             float width = DrawingArea.Width - 4;
 
@@ -150,11 +168,26 @@ namespace TuringMachine
 
            
 
-            if (um.Machine.AcceptingStates.Contains(um.Machine.CurrentStateNumber))
+            if (um.AcceptingStates.Contains(um.CurrentStateNumber))
             {
+                timer1.Stop();
                 MessageBox.Show(String.Format("Operación terminada en {0} pasos", Contador.ToString()));
-                
+                this.Validate = true;
+                SelectMachine();
                 return;
+            }
+            else if (t == null)
+            {
+                if (!um.AcceptingStates.Contains(um.CurrentStateNumber))
+                {
+                    timer1.Stop();
+                    if(!Validate)
+                    MessageBox.Show(String.Format("La entrada es inválida", Contador.ToString()));
+                    Validate = true;
+                    SelectMachine();
+                    return;
+                }
+                
             }
             DrawArrow((startX + boxWidth / 2) + pointer * boxWidth, startY + boxHeight + 50, (startX + boxWidth / 2) + pointer * boxWidth, startY + boxHeight + 5, Color.White);
 
@@ -170,7 +203,14 @@ namespace TuringMachine
             if (t.right)
             {
                 DrawArrow((startX + boxWidth / 2) + (pointer + 1) * boxWidth, startY + boxHeight + 50, (startX + boxWidth / 2) + (pointer + 1) * boxWidth, startY + boxHeight + 5, Color.FromArgb(255, 0, 0, 255));
-                DrawString(symbols[pointer+1], startX + boxWidth * (pointer+1), startY + (boxHeight - letterHeight) / 2, letterHeight, Color.Red);
+                try
+                {
+                    DrawString(symbols[pointer + 1], startX + boxWidth * (pointer + 1), startY + (boxHeight - letterHeight) / 2, letterHeight, Color.Red);
+                }
+                catch
+                {
+                    MessageBox.Show("Cadena no válida");
+                }
             }
             else
             {
@@ -199,6 +239,8 @@ namespace TuringMachine
 
         private void RunButton_Click(object sender, EventArgs e)
         {
+            timer1.Start();
+            /*
             do
             {
                 if (FirstMultiplier)
@@ -231,12 +273,13 @@ namespace TuringMachine
                     return;
                 }
             } while (!um.Machine.AcceptingStates.Contains(um.Machine.CurrentStateNumber));
+            */
         }
 
         public void DrawState()
         {
             DrawFilledRectangle(9, 9, 900, 40, Color.White);
-            DrawString(um.Machine.CurrentState.Descripción, 10, 10, 30, Color.Black);
+            DrawString(um.CurrentState.Descripción, 10, 10, 30, Color.Black);
         }
 
         
@@ -257,6 +300,77 @@ namespace TuringMachine
         }
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            button1.PerformClick();
+        }
+
+        private void Speed_Scroll(object sender, EventArgs e)
+        {
+            timer1.Interval = 1001-Speed.Value;
+        }
+
+        private void radioButton2_CheckedChanged(object sender, EventArgs e)
+        {
+            FirstMultiplier = true;
+        }
+
+        private void SelectMachine()
+        {
+            FirstMultiplier = true;
+            drawArea.Clear(Color.White);
+            while(dataGridView1.Columns.Count >=1)
+            {
+                dataGridView1.Columns.RemoveAt(0);
+            }
+            if (radioButton1.Checked)
+            {
+                um = new Subtractor("", "♭"+MultiplierTxtEntry.Text);
+            }else if (radioButton2.Checked)
+            {
+                um = new Adder("", MultiplierTxtEntry.Text);
+            }else if (radioButton3.Checked)
+            {
+                um = new UnaryMultiplier("", MultiplierTxtEntry.Text);
+            }else if (radioButton4.Checked)
+            {
+                um = new Duplicador("", "♭" + MultiplierTxtEntry.Text);
+            }else if (radioButton5.Checked)
+            {
+                um = new PalindromeValidator("", MultiplierTxtEntry.Text);
+            }
+        }
+
+        private void radioButton1_CheckedChanged(object sender, EventArgs e)
+        {
+            FirstMultiplier = true;
+        }
+
+        private void radioButton3_CheckedChanged(object sender, EventArgs e)
+        {
+            FirstMultiplier = true;
+        }
+
+        private void radioButton4_CheckedChanged(object sender, EventArgs e)
+        {
+            FirstMultiplier = true;
+        }
+
+        private void radioButton5_CheckedChanged(object sender, EventArgs e)
+        {
+            FirstMultiplier = true;
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox2_TextChanged(object sender, EventArgs e)
         {
 
         }

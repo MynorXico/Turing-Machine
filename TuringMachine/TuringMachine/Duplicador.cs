@@ -6,20 +6,25 @@ using System.Threading.Tasks;
 
 namespace TuringMachine
 {
-    class Duplicador
+    class Duplicador:TuringMachine
     {
-        public TuringMachine Machine;
 
-        public Duplicador(String entry)
+        public Duplicador(string filePath, string entry) : base(filePath, entry)
         {
-            Machine = new TuringMachine("src/m2.txt", " "+entry);
-            Machine.EntryAlphabet.Add("1");
-            Machine.EntryAlphabet.Add("0");
-            Machine.TapeAlphabet.Add("1");
-            Machine.TapeAlphabet.Add("0");
+            this.BuildMachine("src/m2.txt");
+            this.EntryAlphabet.Add("1");
+            this.EntryAlphabet.Add("0");
+            this.TapeAlphabet.Add("1");
+            this.TapeAlphabet.Add("0");
+            this.TapeAlphabet.Add("a");
+            this.TapeAlphabet.Add("b");
+            this.TapeAlphabet.Add("c");
+            this.TapeAlphabet.Add("A");
+            this.TapeAlphabet.Add("B");
+            this.TapeAlphabet.Add("C");
 
-            Machine.AcceptingStates.Add(10);
-            Machine.CurrentStateNumber = 13;
+            this.AcceptingStates.Add(10);
+            this.CurrentStateNumber = 13;
             FillBlanks(entry);
         }
 
@@ -33,7 +38,7 @@ namespace TuringMachine
             int BlanksNumber = Entry.Length*2;
             for (int i = 0; i < BlanksNumber; i++)
             {
-                Machine.MachineTape.AddSymbol(Machine.blank);
+                this.MachineTape.AddSymbol(this.blank);
             }
         }
     }

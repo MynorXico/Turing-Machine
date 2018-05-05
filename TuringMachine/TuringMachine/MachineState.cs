@@ -26,7 +26,7 @@ namespace TuringMachine
             {
                 if(Transitions[i].symbol == input)
                 {
-                    return String.Format("({0},{1},{2})", Transitions[i].replacingSymbol, Transitions[i].nextState, (Transitions[i].right? "R": "L"));
+                    return String.Format("({0},{1},{2})", Transitions[i].replacingSymbol, "q"+Transitions[i].nextState, (Transitions[i].right? "R": "L"));
                 }
             }
             return "----";
