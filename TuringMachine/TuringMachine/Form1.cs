@@ -66,6 +66,14 @@ namespace TuringMachine
                 um.Machine.Next();
                 this.textBox1.Text = um.Machine.CurrentState.Descripción;
                 this.textBox2.Text = "Number of steps: " +Contador.ToString();
+                for (int i = 0; i < um.Machine.Q.Count; i++)
+                {
+                    for (int j = 0; j < um.Machine.TapeAlphabet.Count; j++)
+                    {
+                       
+                        dataGridView1.Rows[i].Cells[j].Value = um.Machine.Q[i].getTransition(um.Machine.TapeAlphabet[j]);
+                    }
+                }
             }
 
         }
