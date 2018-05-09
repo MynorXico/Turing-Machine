@@ -29,7 +29,6 @@ Después de abierta la aplicación, debería mostrarse en pantalla algo similar 
 <br>
 En esta ventana, puede seleccionarse cualquiera de las cinco máquinas con que cuenta el programa, seguido de lo cual se muestra una pequeña instrucción con el formato que debe tener la entrada de la máquina.
 
-El archivo de salida tendrá el mismo nombre del archivo de entrada pero con extensión *.asm*.
 ## IDE Utilizado
 El entorno de desarrollo utilizado para construir la aplicación fue Visual Studio 2017
 
