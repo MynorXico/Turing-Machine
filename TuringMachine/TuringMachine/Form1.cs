@@ -317,6 +317,7 @@ namespace TuringMachine
         private void radioButton2_CheckedChanged(object sender, EventArgs e)
         {
             FirstMultiplier = true;
+            textBox3.Text = "Ejemplo de entrada:\n 111+11=";
         }
 
         private void SelectMachine()
@@ -348,21 +349,25 @@ namespace TuringMachine
         private void radioButton1_CheckedChanged(object sender, EventArgs e)
         {
             FirstMultiplier = true;
+            textBox3.Text = "Ejemplo de entrada:\n 111-11=";
         }
 
         private void radioButton3_CheckedChanged(object sender, EventArgs e)
         {
             FirstMultiplier = true;
+            textBox3.Text = "Ejemplo de entrada:\n 111*11=";
         }
 
         private void radioButton4_CheckedChanged(object sender, EventArgs e)
         {
             FirstMultiplier = true;
+            textBox3.Text = "Ejemplo de entrada:\n abc";
         }
 
         private void radioButton5_CheckedChanged(object sender, EventArgs e)
         {
             FirstMultiplier = true;
+            textBox3.Text = "Ejemplo de entrada:\n abcba";
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)
