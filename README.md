@@ -31,9 +31,11 @@ En esta ventana, puede seleccionarse cualquiera de las cinco máquinas con que c
 
 El archivo de salida tendrá el mismo nombre del archivo de entrada pero con extensión *.asm*.
 ## IDE Utilizado
-El entorno de desarrollo utilizado para construir la aplicación fue NetBeans IDE 8.2.
-
+El entorno de desarrollo utilizado para construir la aplicación fue Visual Studio 2017
 
 ## Autor
 
 * **Mynor Ottoniel Xico Tzian**
+
+## Notas del Autor
+Considero que el proyecto funciona correctamente porque fue sometido a una serie de pruebas diseñadas para encontrar posibles errores en la aplicación; además de cumplir con cada uno de los puntos que el enunciado del proyecto solicita. El proyecto es robusto porque además de cumplir con todo lo especificado, es amigable con el usuario mostrando los errores de una manera adecuada.
