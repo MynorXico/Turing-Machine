@@ -123,7 +123,7 @@ namespace TuringMachine
             int pointer = machine.Pointer;
             List<string> symbols = machine.MachineTape.boxes;
 
-            float width = DrawingArea.Width - 4;
+            float width = DrawingArea.Width - 10;
 
             float boxWidth = width / NumberOfBoxes;
             float boxHeight = boxWidth;
@@ -157,7 +157,7 @@ namespace TuringMachine
             int pointer = um.Pointer;
             List<string> symbols = um.MachineTape.boxes;
 
-            float width = DrawingArea.Width - 4;
+            float width = DrawingArea.Width - 10;
 
             float boxWidth = width / NumberOfBoxes;
             float boxHeight = boxWidth;
@@ -240,40 +240,7 @@ namespace TuringMachine
         private void RunButton_Click(object sender, EventArgs e)
         {
             timer1.Start();
-            /*
-            do
-            {
-                if (FirstMultiplier)
-                {
-                    um = new PalindromeValidator(MultiplierTxtEntry.Text);
-                    for(int i = 0; i < um.Machine.TapeAlphabet.Count; i++)
-                    {
-                        DataGridViewColumn dgvc = new DataGridViewColumn();
-                        dataGridView1.Columns.Add(dgvc);
-                    }
-                    for(int i = 0; i < um.Machine.Q.Count; i++)
-                    {
-                        dataGridView1.Rows.Add("q"+i);
-                    }
-                    DrawMachine(um.Machine);
-                    Contador++;
-                    button1.Text = "Next Step";
-                    FirstMultiplier = false;
-                }
-                else
-                {
-                    Contador++;
-                    this.ModifyTape();
-                    um.Machine.Next();
-                }
-                Thread.Sleep(1000-Speed.Value);
-                if (um.Machine.AcceptingStates.Contains(um.Machine.CurrentStateNumber))
-                {
-                    MessageBox.Show("Operación terminada en " + Contador.ToString() + " pasos");
-                    return;
-                }
-            } while (!um.Machine.AcceptingStates.Contains(um.Machine.CurrentStateNumber));
-            */
+            
         }
 
         public void DrawState()

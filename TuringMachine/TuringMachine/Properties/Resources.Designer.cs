@@ -61,33 +61,12 @@ namespace TuringMachine.Properties {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a 0	1	0	blank	R
-        ///1	0	4	0	L
-        ///1	1	2	2	R
-        ///2	0	2	0	D
-        ///2	1	2	1	R
-        ///2	blank	3	1	L
-        ///3	0	3	0	L
-        ///3	1	3	1	L
-        ///3	2	1	2	R
-        ///4	0	5	0	R
-        ///4	2	4	1	L
-        ///5	1	7	1	L
-        ///6	0	1	0	R
-        ///6	1	6	1	R
-        ///7	0	8	0	L
-        ///8	1	9	1	L
-        ///8	blank	10	blank	R
-        ///9	1	9	1	L
-        ///9	blank	0	blank	R
-        ///10	0	11	blank	R
-        ///11	0	12	blank	R
-        ///11	1	11	blank	R
-        ///.
+        ///   Busca un recurso adaptado de tipo System.Drawing.Icon similar a (Icono).
         /// </summary>
-        internal static string machine1 {
+        internal static System.Drawing.Icon icon {
             get {
-                return ResourceManager.GetString("machine1", resourceCulture);
+                object obj = ResourceManager.GetObject("icon", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
             }
         }
     }
