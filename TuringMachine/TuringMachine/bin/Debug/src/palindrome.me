@@ -1,0 +1,62 @@
+# Adds 1 to a binary number.
+input: 'ababababababab'
+blank: ' '
+start state: q0
+table:
+  # scan to the rightmost digit
+  q0:
+    a: {write: ' ', R: q1}
+    b: {write: ' ', R: q4}
+    c: {write: ' ', R: q6}
+    ' ': {write: ' ', R: q8}
+  # Busca la a en la posición correspondiente
+  q1:
+    a: {write: a, R: q1}
+    b: {write: b, R: q1}
+    c: {write: c, R: q1}
+    ' ': {write: ' ', L: q2}
+    A: {write: ' ', L: q2}
+    B: {write: ' ', L: q2}
+    C: {write: ' ', L: q2}
+    
+  # reemplaza a con A
+  q2:
+    ' ': {write: ' ', R: q3}
+    a: {write: ' ', L: q3}
+   
+  # busca la siguiente letra de izquierda a derecha
+  q3:
+    a: {write: a, L: q3}
+    b: {write: b, L: q3}
+    c: {write: c, L: q3}
+    ' ': {write: ' ', R: q0}
+  
+  # Busca la b en la posición correspondiente
+  q4:
+    a: {write: a, R: q4}
+    b: {write: b, R: q4}
+    c: {write: c, R: q4}
+    ' ': {write: ' ', L: q5}
+    A: {write: ' ', L: q5}
+    B: {write: ' ', L: q5}
+    C: {write: ' ', L: q5}  
+  
+  # reemplaza b con B
+  q5:
+    ' ': {write: ' ', R: q6}
+    b: {write: ' ', L: q3}
+    
+  q6:
+    a: {write: a, R: q6}
+    b: {write: b, R: q6}
+    c: {write: c, R: q6}
+    ' ': {write: ' ', L: q7}
+    A: {write: ' ', L: q7}
+    B: {write: ' ', L: q7}
+    C: {write: ' ', L: q7}
+  q7:
+    ' ': {write: ' ', R: q8}
+    c: {write: ' ', L: q3}
+  
+  # Aceptación
+  q8:
