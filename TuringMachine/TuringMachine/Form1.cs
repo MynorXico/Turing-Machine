@@ -18,7 +18,7 @@ namespace TuringMachine
         Graphics drawArea;
         TuringMachine um;
         bool FirstMultiplier = true;
-        bool Validate = false;
+        bool valide = false;
 
         public Form1()
         {
@@ -31,7 +31,7 @@ namespace TuringMachine
         {
             if (FirstMultiplier)
             {
-                Validate = false;
+                valide = false;
                 SelectMachine();
                 for (int i = 0; i < um.TapeAlphabet.Count; i++)
                 {
@@ -83,9 +83,9 @@ namespace TuringMachine
                     if (!um.AcceptingStates.Contains(um.CurrentStateNumber))
                     {
                         timer1.Stop();
-                        if(!this.Validate)
+                        if(!this.valide)
                         MessageBox.Show(String.Format("La entrada es inválida", Contador.ToString()));
-                        Validate = true;
+                        valide = true;
                         SelectMachine();
                         return;
                     }
@@ -172,7 +172,7 @@ namespace TuringMachine
             {
                 timer1.Stop();
                 MessageBox.Show(String.Format("Operación terminada en {0} pasos", Contador.ToString()));
-                this.Validate = true;
+                this.valide = true;
                 SelectMachine();
                 return;
             }
@@ -181,9 +181,9 @@ namespace TuringMachine
                 if (!um.AcceptingStates.Contains(um.CurrentStateNumber))
                 {
                     timer1.Stop();
-                    if(!Validate)
+                    if(!valide)
                     MessageBox.Show(String.Format("La entrada es inválida", Contador.ToString()));
-                    Validate = true;
+                    valide = true;
                     SelectMachine();
                     return;
                 }
@@ -284,7 +284,8 @@ namespace TuringMachine
         private void radioButton2_CheckedChanged(object sender, EventArgs e)
         {
             FirstMultiplier = true;
-            textBox3.Text = "Ejemplo de entrada:\n 111+11=";
+            textBox3.Text = "Ejemplo de entrada:\n {111+11=} Caracteres válidos: 1+=";
+ 
         }
 
         private void SelectMachine()
@@ -316,25 +317,25 @@ namespace TuringMachine
         private void radioButton1_CheckedChanged(object sender, EventArgs e)
         {
             FirstMultiplier = true;
-            textBox3.Text = "Ejemplo de entrada:\n 111-11=";
+            textBox3.Text = "Ejemplo de entrada:\n {111-11=} Caracteres válidos: 1,-,=";
         }
 
         private void radioButton3_CheckedChanged(object sender, EventArgs e)
         {
             FirstMultiplier = true;
-            textBox3.Text = "Ejemplo de entrada:\n 111*11=";
+            textBox3.Text = "Ejemplo de entrada:\n {111*11=} Caracteres válidos: 1,*,=";
         }
 
         private void radioButton4_CheckedChanged(object sender, EventArgs e)
         {
             FirstMultiplier = true;
-            textBox3.Text = "Ejemplo de entrada:\n abc";
+            textBox3.Text = "Ejemplo de entrada:\n {abc} Caracteres válidos: a,b,c";
         }
 
         private void radioButton5_CheckedChanged(object sender, EventArgs e)
         {
             FirstMultiplier = true;
-            textBox3.Text = "Ejemplo de entrada:\n abcba";
+            textBox3.Text = "Ejemplo de entrada:\n {abcba} Caracteres válidos: a,b,c";
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)
@@ -343,6 +344,11 @@ namespace TuringMachine
         }
 
         private void textBox2_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox3_TextChanged(object sender, EventArgs e)
         {
 
         }
