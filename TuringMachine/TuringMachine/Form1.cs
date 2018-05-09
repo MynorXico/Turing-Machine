@@ -341,7 +341,7 @@ namespace TuringMachine
                 um = new Duplicador("", "♭" + MultiplierTxtEntry.Text);
             }else if (radioButton5.Checked)
             {
-                um = new PalindromeValidator("", MultiplierTxtEntry.Text);
+                um = new PalindromeValidator("", MultiplierTxtEntry.Text+ "♭♭");
             }
         }
 
